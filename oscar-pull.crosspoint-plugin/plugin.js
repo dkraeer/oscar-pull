@@ -126,7 +126,17 @@ CrossPoint.registerPlugin(async (container, api) => {
   wrap.querySelector("#op-save").addEventListener("click", saveBase);
   wrap.querySelector("#op-both").addEventListener("click", pullToday);
   wrap.querySelector("#op-dash").addEventListener("click", () => pullFiltered("sleep.bmp"));
-  wrap.querySelector("#op-epub").addEventListener("click", () => pullFiltered("briefing.epub"));
+  wrap.querySelector("#op-epub").addEventListener("click", () => {
+    // Briefing files are dated (briefing-YYYY-MM-DD.epub) so each day's
+    // pull is a brand-new book on the reader — no overwrite/cache issues.
+    (async () => {
+      const items = await fetchCatalog();
+      if (!items) return;
+      const item = items.find((i) => /^briefing.*\.epub$/.test(i.id));
+      if (!item) { say("No briefing in today's catalog."); return; }
+      if (await pullItem(item)) say("Today's briefing is on the reader.");
+    })();
+  });
 
   if (api.registerAction) api.registerAction("oscar-pull-today", pullToday);
 });
