@@ -1,0 +1,1 @@
+{"author":"Oscar","description":"Pull today's dashboard sleep screen and briefing EPUB from Oscar's daily feed.","files":["manifest.json","device.json","plugin.js","README.md","DETAILS.md"],"mount":"settings","name":"oscar-pull","title":"Oscar Daily Pull","version":"0.1.0"}
